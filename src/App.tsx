@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -28,19 +27,21 @@ function App() {
             className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
           >
             <li>
-              <a>Homepage</a>
+              <a href='google.com'>Homepage</a>
             </li>
             <li>
-              <a>Portfolio</a>
+              <a href='google.com'>Portfolio</a>
             </li>
             <li>
-              <a>About</a>
+              <a href='google.com'>About</a>
             </li>
           </ul>
         </div>
       </div>
       <div className='navbar-center'>
-        <a className='btn btn-ghost text-xl'>daisyUI</a>
+        <a href='google.com' className='btn btn-ghost text-xl'>
+          daisyUI
+        </a>
       </div>
       <div className='navbar-end'>
         <button className='btn btn-ghost btn-circle'>
