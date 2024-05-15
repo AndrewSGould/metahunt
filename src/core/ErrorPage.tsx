@@ -13,7 +13,7 @@ export default function ErrorPage() {
       <div className='-mt-16'>
         <h1 className='font-bold text-4xl text-center my-4'>Oops!</h1>
         <p>Sorry, we ran into an error.</p>
-        <p className='mt-4 bg-slate-900 px-6 py-4 rounded-md'>
+        <p className='mt-4 bg-slate-900 px-6 py-4 rounded-md text-sm'>
           <i>
             Error:&nbsp;
             <span className='text-red-400'>
