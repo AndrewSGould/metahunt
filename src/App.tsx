@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Header from './core/Header';
 import Nav from './core/Nav';
 
 function App() {
   const [isNavOpen, setIsNavOpen] = useState(true);
-
-  useEffect(() => {
-    console.log(isNavOpen);
-  }, [isNavOpen]);
 
   return (
     <main className='bg-tertiary h-screen'>
