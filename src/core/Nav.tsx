@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   IconAbc,
   IconCalendarMonth,
@@ -6,15 +5,20 @@ import {
   IconDice5,
   IconGraph,
   IconLayoutDashboard,
-  IconLogout,
   IconMoodPuzzled,
   IconSettings,
   IconUserScan,
 } from '@tabler/icons-react';
 import Avatar from '../icons/Avatar';
 import { AnimatePresence, motion } from 'framer-motion';
+import NavItem from './NavItem';
+import Signin from './Signin';
+import { RootState } from '../state/store';
+import { useSelector } from 'react-redux';
 
 export default function Nav({ isNavOpen }: NavProps) {
+  const user = useSelector((state: RootState) => state.user);
+
   return (
     <AnimatePresence>
       {isNavOpen && (
@@ -23,24 +27,28 @@ export default function Nav({ isNavOpen }: NavProps) {
           animate={{ marginLeft: 0 }}
           exit={{ marginLeft: 0 }}
           transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-          className='menu bg-secondary border-r border-r-slate-500 w-56 h-[calc(100vh-64px)] flex-nowrap'
+          className='menu bg-secondary border-r border-r-slate-500 flex-none w-56 h-[calc(100vh-64px)] flex-nowrap'
         >
           <div>
-            <li>
-              <a href='www.google.com'>
-                <IconLayoutDashboard />
-                Dashboard
-              </a>
-            </li>
-            <hr className='border-slate-600 my-2' />
-            <li className='text-green-200'>
+            <NavItem
+              activePath='profile'
+              path='profile'
+              title='Dashboard'
+              icon={<IconLayoutDashboard />}
+            />
+            {user.isAuthenticated && (
               <div>
-                <Avatar />
-                kT Echo
-                {/* <IconChevronDown className='swap-off fill-current w-4 h-4' /> */}
+                <hr className='border-slate-600 my-2' />
+                <li className='text-green-200 pointer-events-none'>
+                  <div>
+                    <Avatar />
+                    kT Echo
+                    {/* <IconChevronDown className='swap-off fill-current w-4 h-4' /> */}
+                  </div>
+                </li>
+                <hr className='border-slate-600 my-2' />
               </div>
-            </li>
-            <hr className='border-slate-600 my-2' />
+            )}
             <li className='text-[#f0d964]'>
               <span className='pointer-events-none font-normal leading-tight tracking-widest'>
                 BCMX
@@ -48,63 +56,58 @@ export default function Nav({ isNavOpen }: NavProps) {
             </li>
           </div>
           <div className='h-auto overflow-y-auto'>
-            <li>
-              <a href='www.google.com'>
-                <IconUserScan />
-                Profile
-              </a>
-            </li>
-            <li>
-              <a href='www.google.com'>
-                <IconGraph />
-                Leaderboards
-              </a>
-            </li>
-            <li>
-              <a href='www.google.com'>
-                <IconCalendarMonth />
-                Monthly Bonus
-              </a>
-            </li>
-            <li>
-              <a href='www.google.com'>
-                <IconDice5 />
-                RGSC
-              </a>
-            </li>
-            <li>
-              <a href='www.google.com'>
-                <IconCalendarTime />
-                Yearlies
-              </a>
-            </li>
-            <li>
-              <a href='www.google.com'>
-                <IconAbc />
-                ABC
-              </a>
-            </li>
-            <li>
-              <a href='www.google.com'>
-                <IconMoodPuzzled />
-                Odd Jobs
-              </a>
-            </li>
+            <NavItem
+              activePath='bcmx/profile/:id'
+              path='bcmx/profile/1'
+              title='Profile'
+              icon={<IconUserScan />}
+            />
+            <NavItem
+              activePath='bcmx/leaderboards'
+              path='bcmx/leaderboards'
+              title='Leaderboards'
+              icon={<IconGraph />}
+            />
+            <NavItem
+              activePath='bcmx/monthly'
+              path='bcmx/monthly'
+              title='Monthly Bonus'
+              icon={<IconCalendarMonth />}
+            />
+            <NavItem
+              activePath='bcmx/rgsc'
+              path='bcmx/rgsc'
+              title='RGSC'
+              icon={<IconDice5 />}
+            />
+            <NavItem
+              activePath='bcmx/yearlies'
+              path='bcmx/yearlies'
+              title='Yearlies'
+              icon={<IconCalendarTime />}
+            />
+            <NavItem
+              activePath='bcmx/abc'
+              path='bcmx/abc'
+              title='ABC'
+              icon={<IconAbc />}
+            />
+            <NavItem
+              activePath='bcmx/oddjobs'
+              path='bcmx/oddjobs'
+              title='Odd Jobs'
+              icon={<IconMoodPuzzled />}
+            />
           </div>
           <div className='mt-auto'>
             <hr className='border-slate-600 my-2' />
-            <li>
-              <a href='www.google.com'>
-                <IconSettings />
-                Settings
-              </a>
-            </li>
-            <li className='text-red-300'>
-              <a href='www.google.com'>
-                <IconLogout />
-                Sign Out
-              </a>
-            </li>
+            <NavItem
+              activePath='settings'
+              path='settings'
+              title='Settings'
+              icon={<IconSettings />}
+            />
+            <Signin />
           </div>
         </motion.ul>
       )}
