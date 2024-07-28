@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginResponse } from '../types/LoginResponse';
 import { useDispatch } from 'react-redux';
-import { setUserInfo, setUserIsAuthd } from '../state/userSlice';
-import { useLoginMutation } from '../api/apiSlice';
+import { setUserAuth, setUserInfo } from '../state/userSlice';
+import { useLoginMutation } from '../api/api';
 
 export default function XblConnection() {
   const location = useLocation();
@@ -25,9 +25,9 @@ export default function XblConnection() {
         localStorage.setItem('avatar', res.avatar!);
         localStorage.setItem('roles', JSON.stringify(res.roles));
 
-        dispatch(setUserIsAuthd());
+        dispatch(setUserAuth(true));
         dispatch(setUserInfo(res));
-        navigate('/profile');
+        navigate('/dashboard');
       })
       .catch(() => {
         alert('unhandled error when logging in');

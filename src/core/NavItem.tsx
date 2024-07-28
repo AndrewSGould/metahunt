@@ -1,12 +1,7 @@
 import { Link, useMatch } from 'react-router-dom';
 
-export default function NavItem({
-  path,
-  activePath,
-  title,
-  icon,
-}: NavItemProps) {
-  const isActive = useMatch(activePath);
+export default function NavItem({ path, title, icon }: NavItemProps) {
+  const isActive = useMatch(path);
 
   return (
     <li className={isActive ? 'bg-slate-600 rounded-md text-white' : ''}>
@@ -21,6 +16,5 @@ export default function NavItem({
 type NavItemProps = {
   path: string;
   title: string;
-  activePath: string;
   icon: React.ReactNode;
 };

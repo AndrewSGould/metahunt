@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDiscordLoginMutation } from '../api/apiSlice';
+import { useDiscordLoginMutation } from '../api/api';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import { setUserInfo } from '../state/userSlice';
-import { setDiscordIsAuthd } from '../state/discordSlice';
+import { setDiscordAuth } from '../state/discordSlice';
 
 export default function DiscordConnection() {
   const location = useLocation();
@@ -25,7 +25,7 @@ export default function DiscordConnection() {
         localStorage.setItem('jwt', res.token!);
         localStorage.setItem('refreshToken', res.refreshToken!);
 
-        dispatch(setDiscordIsAuthd());
+        dispatch(setDiscordAuth(true));
         dispatch(setUserInfo(res));
         navigate('/settings');
       })

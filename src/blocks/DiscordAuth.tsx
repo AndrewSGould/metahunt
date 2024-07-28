@@ -1,12 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import CardHeader from '../bits/CardHeader';
+import { useResyncDiscordRolesMutation } from '../api/api';
+import { useEffect } from 'react';
+import { setUserInfo } from '../state/userSlice';
 
 export default function DiscordAuth() {
+  const dispatch = useDispatch();
+  const [resyncDiscordRoles] = useResyncDiscordRolesMutation();
   const user = useSelector((state: RootState) => state.user);
   const sortedRoles = user.roles
     ? [...user.roles].sort((a, b) => a.localeCompare(b))
     : [];
+
+  const handleResync = () => {
+    resyncDiscordRoles()
+      .unwrap()
+      .then((res: any) => {
+        dispatch(setUserInfo(res));
+      })
+      .catch((error: any) => {
+        console.error('Refresh failed:', error);
+      });
+  };
 
   function getRoleColor(role: string) {
     switch (role) {
@@ -40,6 +56,8 @@ export default function DiscordAuth() {
         return 'text-[#546e7a]';
       case 'Twitch Watchers':
         return 'text-[#546e7a]';
+      case 'BCM Admin':
+        return 'text-[#ca4646]';
     }
   }
 
@@ -60,6 +78,12 @@ export default function DiscordAuth() {
           </li>
         ))}
       </ul>
+      <p className='text-xs mt-4 mb-2'>
+        If your roles seem incorrect, try re-syncing them:
+      </p>
+      <button type='button' className='btn btn-neutral' onClick={handleResync}>
+        Resync Roles
+      </button>
     </>
   );
 }

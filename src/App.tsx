@@ -2,18 +2,25 @@ import { useEffect, useState } from 'react';
 import Header from './core/Header';
 import Nav from './core/Nav';
 import { Outlet } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setUserInfo, setUserIsAuthd } from './state/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserAuth, setUserInfo } from './state/userSlice';
+import { setDiscordAuth } from './state/discordSlice';
+import { usePingDiscordQuery } from './api/api';
+import { RootState } from './state/store';
 
 function App() {
-  const [isNavOpen, setIsNavOpen] = useState(true);
+  const user = useSelector((state: RootState) => state.user);
 
+  const [isNavOpen, setIsNavOpen] = useState(true);
+  const { isSuccess } = usePingDiscordQuery(undefined, {
+    skip: !user.isAuthenticated,
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem('jwt');
     if (token) {
-      dispatch(setUserIsAuthd());
+      dispatch(setUserAuth(true));
       dispatch(
         setUserInfo({
           avatar: localStorage.getItem('avatar')!,
@@ -26,15 +33,18 @@ function App() {
     }
   }, [dispatch]);
 
-  // TODO: on load of the app, ping the discord connection endpoint?
-  // then set the state of connected or not
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setDiscordAuth(true));
+    } else dispatch(setDiscordAuth(false));
+  }, [dispatch, isSuccess]);
 
   return (
     <main className='bg-tertiary h-screen'>
       <Header setIsNavOpen={setIsNavOpen} />
       <div className='flex w-screen'>
         <Nav isNavOpen={isNavOpen} />
-        <section className='m-6 w-full'>
+        <section className='w-full'>
           <Outlet />
         </section>
       </div>

@@ -3,6 +3,7 @@ import {
   IconCalendarMonth,
   IconCalendarTime,
   IconDice5,
+  IconGavel,
   IconGraph,
   IconLayoutDashboard,
   IconMoodPuzzled,
@@ -31,8 +32,7 @@ export default function Nav({ isNavOpen }: NavProps) {
         >
           <div>
             <NavItem
-              activePath='profile'
-              path='profile'
+              path='dashboard'
               title='Dashboard'
               icon={<IconLayoutDashboard />}
             />
@@ -57,56 +57,39 @@ export default function Nav({ isNavOpen }: NavProps) {
           </div>
           <div className='h-auto overflow-y-auto'>
             <NavItem
-              activePath='bcmx/profile/:id'
               path='bcmx/profile/1'
               title='Profile'
               icon={<IconUserScan />}
             />
             <NavItem
-              activePath='bcmx/leaderboards'
               path='bcmx/leaderboards'
               title='Leaderboards'
               icon={<IconGraph />}
             />
             <NavItem
-              activePath='bcmx/monthly'
               path='bcmx/monthly'
               title='Monthly Bonus'
               icon={<IconCalendarMonth />}
             />
+            <NavItem path='bcmx/rgsc' title='RGSC' icon={<IconDice5 />} />
             <NavItem
-              activePath='bcmx/rgsc'
-              path='bcmx/rgsc'
-              title='RGSC'
-              icon={<IconDice5 />}
-            />
-            <NavItem
-              activePath='bcmx/yearlies'
               path='bcmx/yearlies'
               title='Yearlies'
               icon={<IconCalendarTime />}
             />
+            <NavItem path='bcmx/abc' title='ABC' icon={<IconAbc />} />
             <NavItem
-              activePath='bcmx/abc'
-              path='bcmx/abc'
-              title='ABC'
-              icon={<IconAbc />}
-            />
-            <NavItem
-              activePath='bcmx/oddjobs'
               path='bcmx/oddjobs'
               title='Odd Jobs'
               icon={<IconMoodPuzzled />}
             />
+            {user.roles?.find((x) => x === 'BCM Admin') && (
+              <NavItem path='bcmx/admin' title='Admin' icon={<IconGavel />} />
+            )}
           </div>
           <div className='mt-auto'>
             <hr className='border-slate-600 my-2' />
-            <NavItem
-              activePath='settings'
-              path='settings'
-              title='Settings'
-              icon={<IconSettings />}
-            />
+            <NavItem path='settings' title='Settings' icon={<IconSettings />} />
             <Signin />
           </div>
         </motion.ul>

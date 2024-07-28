@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../state/store';
 import { logout, setToken } from '../state/userSlice';
-import {
-  DiscordLoginCredentials,
-  DiscordLoginResponse,
-  LoginCredentials,
-  LoginResponse,
-} from '../types';
+import { discordEndpoints } from './discord.api';
+import { oxblEndpoints } from './oxbl.api';
+import { userEndpoints } from './user.api';
+import { bcmEndpoints } from './bcm.api';
 
 const API_BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
@@ -26,6 +24,7 @@ const baseQueryWithReauth: typeof baseQuery = async (
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 
+  // TODO: when 500, redirect to error page
   if (result.error && result.error.status === 401) {
     const userState = (api.getState() as RootState).user;
 
@@ -46,42 +45,31 @@ const baseQueryWithReauth: typeof baseQuery = async (
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logout());
-      window.location.href = '/';
+      window.location.href = '/'; // TODO: redirect to actual logout page
     }
   }
   return result;
 };
 
-export const apiSlice = createApi({
+export const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  keepUnusedDataFor: 5000, // extremely long default cache since the app only changes data weekly
+  keepUnusedDataFor: 60 * 60 * 24, // 1 day, extremely long default cache since the app only changes data weekly
   endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, LoginCredentials>({
-      query: (credentials) => ({
-        url: '/v2/oxbl/login',
-        method: 'POST',
-        body: credentials,
-      }),
-    }),
-    discordLogin: builder.mutation<
-      DiscordLoginResponse,
-      DiscordLoginCredentials
-    >({
-      query: (creds) => ({
-        url: '/v2/discord/login',
-        method: 'POST',
-        body: creds,
-      }),
-    }),
-    getBcmPlayers: builder.query<any, void>({
-      query: () => 'bcm/getPlayerList',
-    }),
+    ...discordEndpoints(builder),
+    ...oxblEndpoints(builder),
+    ...userEndpoints(builder),
+    ...bcmEndpoints(builder),
   }),
 });
 
 export const {
-  useLoginMutation,
   useDiscordLoginMutation,
+  usePingDiscordQuery,
+  useLoginMutation,
+  useResyncDiscordRolesMutation,
+  useGetLocationQuery,
+  useUpdateLocationMutation,
   useGetBcmPlayersQuery,
-} = apiSlice;
+  useGetBcmPlayerCompareQuery,
+} = api;

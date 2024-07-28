@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DiscordState } from '../types';
 
 const initialState: DiscordState = {
@@ -9,15 +9,12 @@ const discordSlice = createSlice({
   name: 'discord',
   initialState,
   reducers: {
-    setDiscordIsAuthd: (state) => {
-      state.isAuthenticated = true;
-    },
-    setDiscordIsNotAuthd: (state) => {
-      state.isAuthenticated = false;
+    setDiscordAuth: (state, action: PayloadAction<boolean>) => {
+      state.isAuthenticated = action.payload;
     },
   },
 });
 
-export const { setDiscordIsAuthd, setDiscordIsNotAuthd } = discordSlice.actions;
+export const { setDiscordAuth } = discordSlice.actions;
 
 export default discordSlice.reducer;
