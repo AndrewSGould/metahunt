@@ -32,7 +32,7 @@ export default function DiscordConnection() {
       .catch((error: any) => {
         console.error('Login failed:', error);
       });
-  }, [code, navigate, user.isAuthenticated]);
+  }, [code, discordLogin, dispatch, navigate, user.isAuthenticated]);
 
   return <></>;
 }

@@ -5,7 +5,6 @@ import {
   useGetBcmPlayersQuery,
 } from '../../api/api';
 import BcmxLogo from '../assets/bcmx-logo.png';
-import TavisInvis from '../../assets/tavis_invis.png';
 import { ordinal } from '../../utils/ordinal';
 import { formatNumber } from '../../utils/numberFormatter';
 import LargeAvatar from './LargeAvatar';

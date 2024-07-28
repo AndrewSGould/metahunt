@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import CardHeader from '../bits/CardHeader';
 import { useResyncDiscordRolesMutation } from '../api/api';
-import { useEffect } from 'react';
 import { setUserInfo } from '../state/userSlice';
 
 export default function DiscordAuth() {
